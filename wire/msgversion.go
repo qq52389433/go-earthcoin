@@ -17,7 +17,10 @@ import (
 const MaxUserAgentLen = 256
 
 // DefaultUserAgent for wire in the stack
-const DefaultUserAgent = "/btcwire:0.5.0/"
+// -- by btc
+// const DefaultUserAgent = "/btcwire:0.5.0/"
+// -- by eac
+const DefaultUserAgent = "/Satoshi:1.5.5.1/"
 
 // MsgVersion implements the Message interface and represents a bitcoin version
 // message.  It is used for a peer to advertise itself as soon as an outbound

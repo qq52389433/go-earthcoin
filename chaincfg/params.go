@@ -24,7 +24,14 @@ var (
 
 	// mainPowLimit is the highest proof of work value a Bitcoin block can
 	// have for the main network.  It is the value 2^224 - 1.
-	mainPowLimit = new(big.Int).Sub(new(big.Int).Lsh(bigOne, 224), bigOne)
+	// -- by btc   00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+	// （64位数 - 8个零 ）= 56 × 4 = 224
+	//mainPowLimit = new(big.Int).Sub(new(big.Int).Lsh(bigOne, 224), bigOne)
+	
+	// -- by eac   00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+	// （64位数 - 5个零 ）= 59 × 4 = 236
+	// EarthCoin: starting difficulty is 1 / 2^12
+	mainPowLimit = new(big.Int).Sub(new(big.Int).Lsh(bigOne, 236), bigOne)
 
 	// regressionPowLimit is the highest proof of work value a Bitcoin block
 	// can have for the regression test network.  It is the value 2^255 - 1.
@@ -225,15 +232,34 @@ type Params struct {
 var MainNetParams = Params{
 	Name:        "mainnet",
 	Net:         wire.MainNet,
-	DefaultPort: "8333",
-	DNSSeeds: []DNSSeed{
-		{"seed.bitcoin.sipa.be", true},
-		{"dnsseed.bluematt.me", true},
-		{"dnsseed.bitcoin.dashjr.org", false},
-		{"seed.bitcoinstats.com", true},
-		{"seed.bitnodes.io", false},
-		{"seed.bitcoin.jonasschnelli.ch", true},
+	//DefaultPort: "8333",		//--by btc
+	DefaultPort: "35677",		//--by eac
+	//--by btc
+	// DNSSeeds: []DNSSeed{	
+		// {"seed.bitcoin.sipa.be", true},
+		// {"dnsseed.bluematt.me", true},
+		// {"dnsseed.bitcoin.dashjr.org", false},
+		// {"seed.bitcoinstats.com", true},
+		// {"seed.bitnodes.io", false},
+		// {"seed.bitcoin.jonasschnelli.ch", true},
+	// },
+	
+	//--by eac
+	DNSSeeds: []DNSSeed{	
+		{"148.163.168.167", true},
 	},
+
+	// {"106.14.222.124", true},
+	// {"120.79.171.136",true},
+	// {"212.237.21.74",true},
+	// {"144.34.129.66",true},
+	// {"193.112.55.242",true},
+	// {"47.88.57.196",true},
+	// {"118.24.119.155",true},
+	// {"182.151.14.132",true},
+	// {"111.230.5.182",true},
+	// {"122.224.233.77",true},
+
 
 	// Chain parameters
 	GenesisBlock:             &genesisBlock,
@@ -253,25 +279,31 @@ var MainNetParams = Params{
 	GenerateSupported:        false,
 
 	// Checkpoints ordered from oldest to newest.
+    // -- by btc
+	// Checkpoints: []Checkpoint{
+	// 	{11111, newHashFromStr("0000000069e244f73d78e8fd29ba2fd2ed618bd6fa2ee92559f542fdb26e7c1d")},
+	// 	{33333, newHashFromStr("000000002dd5588a74784eaa7ab0507a18ad16a236e7b1ce69f00d7ddfb5d0a6")},
+	// 	{74000, newHashFromStr("0000000000573993a3c9e41ce34471c079dcf5f52a0e824a81e7f953b8661a20")},
+	// 	{105000, newHashFromStr("00000000000291ce28027faea320c8d2b054b2e0fe44a773f3eefb151d6bdc97")},
+	// 	{134444, newHashFromStr("00000000000005b12ffd4cd315cd34ffd4a594f430ac814c91184a0d42d2b0fe")},
+	// 	{168000, newHashFromStr("000000000000099e61ea72015e79632f216fe6cb33d7899acb35b75c8303b763")},
+	// 	{193000, newHashFromStr("000000000000059f452a5f7340de6682a977387c17010ff6e6c3bd83ca8b1317")},
+	// 	{210000, newHashFromStr("000000000000048b95347e83192f69cf0366076336c639f9b7228e9ba171342e")},
+	// 	{216116, newHashFromStr("00000000000001b4f4b433e81ee46494af945cf96014816a4e2370f11b23df4e")},
+	// 	{225430, newHashFromStr("00000000000001c108384350f74090433e7fcf79a606b8e797f065b130575932")},
+	// 	{250000, newHashFromStr("000000000000003887df1f29024b06fc2200b55f8af8f35453d7be294df2d214")},
+	// 	{267300, newHashFromStr("000000000000000a83fbd660e918f218bf37edd92b748ad940483c7c116179ac")},
+	// 	{279000, newHashFromStr("0000000000000001ae8c72a0b0c301f67e3afca10e819efa9041e458e9bd7e40")},
+	// 	{300255, newHashFromStr("0000000000000000162804527c6e9b9f0563a280525f9d08c12041def0a0f3b2")},
+	// 	{319400, newHashFromStr("000000000000000021c6052e9becade189495d1c539aa37c58917305fd15f13b")},
+	// 	{343185, newHashFromStr("0000000000000000072b8bf361d01a6ba7d445dd024203fafc78768ed4368554")},
+	// 	{352940, newHashFromStr("000000000000000010755df42dba556bb72be6a32f3ce0b6941ce4430152c9ff")},
+	// 	{382320, newHashFromStr("00000000000000000a8dc6ed5b133d0eb2fd6af56203e4159789b092defd8ab2")},
+	// },
+
+	// -- by eac
 	Checkpoints: []Checkpoint{
-		{11111, newHashFromStr("0000000069e244f73d78e8fd29ba2fd2ed618bd6fa2ee92559f542fdb26e7c1d")},
-		{33333, newHashFromStr("000000002dd5588a74784eaa7ab0507a18ad16a236e7b1ce69f00d7ddfb5d0a6")},
-		{74000, newHashFromStr("0000000000573993a3c9e41ce34471c079dcf5f52a0e824a81e7f953b8661a20")},
-		{105000, newHashFromStr("00000000000291ce28027faea320c8d2b054b2e0fe44a773f3eefb151d6bdc97")},
-		{134444, newHashFromStr("00000000000005b12ffd4cd315cd34ffd4a594f430ac814c91184a0d42d2b0fe")},
-		{168000, newHashFromStr("000000000000099e61ea72015e79632f216fe6cb33d7899acb35b75c8303b763")},
-		{193000, newHashFromStr("000000000000059f452a5f7340de6682a977387c17010ff6e6c3bd83ca8b1317")},
-		{210000, newHashFromStr("000000000000048b95347e83192f69cf0366076336c639f9b7228e9ba171342e")},
-		{216116, newHashFromStr("00000000000001b4f4b433e81ee46494af945cf96014816a4e2370f11b23df4e")},
-		{225430, newHashFromStr("00000000000001c108384350f74090433e7fcf79a606b8e797f065b130575932")},
-		{250000, newHashFromStr("000000000000003887df1f29024b06fc2200b55f8af8f35453d7be294df2d214")},
-		{267300, newHashFromStr("000000000000000a83fbd660e918f218bf37edd92b748ad940483c7c116179ac")},
-		{279000, newHashFromStr("0000000000000001ae8c72a0b0c301f67e3afca10e819efa9041e458e9bd7e40")},
-		{300255, newHashFromStr("0000000000000000162804527c6e9b9f0563a280525f9d08c12041def0a0f3b2")},
-		{319400, newHashFromStr("000000000000000021c6052e9becade189495d1c539aa37c58917305fd15f13b")},
-		{343185, newHashFromStr("0000000000000000072b8bf361d01a6ba7d445dd024203fafc78768ed4368554")},
-		{352940, newHashFromStr("000000000000000010755df42dba556bb72be6a32f3ce0b6941ce4430152c9ff")},
-		{382320, newHashFromStr("00000000000000000a8dc6ed5b133d0eb2fd6af56203e4159789b092defd8ab2")},
+		
 	},
 
 	// Consensus rule change deployments.
@@ -401,12 +433,18 @@ var RegressionNetParams = Params{
 var TestNet3Params = Params{
 	Name:        "testnet3",
 	Net:         wire.TestNet3,
-	DefaultPort: "18333",
-	DNSSeeds: []DNSSeed{
-		{"testnet-seed.bitcoin.jonasschnelli.ch", true},
-		{"testnet-seed.bitcoin.schildbach.de", false},
-		{"seed.tbtc.petertodd.org", true},
-		{"testnet-seed.bluematt.me", false},
+	//DefaultPort: "18333",	//-- by btc
+	DefaultPort: "25677",	//-- by eac
+	//-- by btc
+	// DNSSeeds: []DNSSeed{
+		// {"testnet-seed.bitcoin.jonasschnelli.ch", true},
+		// {"testnet-seed.bitcoin.schildbach.de", false},
+		// {"seed.tbtc.petertodd.org", true},
+		// {"testnet-seed.bluematt.me", false},
+	// },
+	//-- by eac
+	DNSSeeds: []DNSSeed{	
+		{"testnet-seed.earthcointools.org", true},
 	},
 
 	// Chain parameters
